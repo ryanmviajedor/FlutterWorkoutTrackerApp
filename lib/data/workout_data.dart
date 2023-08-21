@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_workout_tracker_app/models/exercise.dart';
 import 'package:flutter_workout_tracker_app/models/workout.dart';
 
-class WorkoutData {
+class WorkoutData extends ChangeNotifier {
   List<Workout> workoutList = [
     Workout(
       name: "Biceps",
@@ -31,6 +32,8 @@ class WorkoutData {
   // add workout
   void addWorkout(String name) {
     workoutList.add(Workout(name: name, exercises: []));
+
+    notifyListeners();
   }
 
   // add exercise to workout
@@ -40,6 +43,8 @@ class WorkoutData {
 
     relevantWorkout.exercises.add(
         Exercise(name: exerciseName, weight: weight, reps: reps, sets: sets));
+
+    notifyListeners();
   }
 
   // check exercise
@@ -49,6 +54,8 @@ class WorkoutData {
 
     // check boolean to show user completed the exercise
     relevantExercise.isCompleted = !relevantExercise.isCompleted;
+
+    notifyListeners();
   }
 
   // return relevant workout object, given workout name
@@ -62,6 +69,7 @@ class WorkoutData {
   // return relevent exercise object, given exercise name
   Exercise getRelevantExercise(String workoutName, String exerciseName) {
     Workout relevantWorkout = getRelevantWorkout(workoutName);
+
     Exercise relevantExercise = relevantWorkout.exercises
         .firstWhere((exercise) => exercise.name == exerciseName);
 
